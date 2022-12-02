@@ -5,15 +5,21 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null) // User is null by default
+  // Create new blog states
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setURL] = useState('')
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    const getAllBlogs = async () => {
+      const allBlogsInDB = await blogService.getAll()
+      setBlogs(allBlogsInDB)
+    }
+
+    getAllBlogs()
   }, [])
 
   // Check if there is logged in user already in localstorage
@@ -52,9 +58,31 @@ const App = () => {
     setUser(null)
   }
 
+
+
+  const handleCreateNew = async (event) => {
+    event.preventDefault()
+
+    console.log('title', title)
+    console.log('author', author)
+    console.log('url', url)
+
+    await blogService.createBlog(title, author, url)
+
+    const allBlogsInDB = await blogService.getAll()
+
+    setBlogs(allBlogsInDB)
+
+    setTitle('')
+    setAuthor('')
+    setURL('')
+  }
+
   // Filter only the blogs of the logged in user
   // If the user is null just use the list of all the blogs
-  const usersBlogs = user ? blogs.filter(blog => blog.user.username === user.username) : blogs
+  let usersBlogs = user
+    ? blogs.filter(blog => blog.user.username === user.username)
+    : blogs
 
   // Render to login form only if user not yet logged in
   if (user === null) {
@@ -94,6 +122,38 @@ const App = () => {
         <p>{user.username} logged in </p>
         <button onClick={handleLogout}>logout</button>
       </div>
+      <br></br>
+      <h2>create new</h2>
+      <form onSubmit={handleCreateNew}>
+        <div>
+          title
+          <input
+            type="text"
+            value={title}
+            name="title"
+            onChange={({ target }) => setTitle(target.value)}
+          />
+        </div>
+        <div>
+          author
+          <input
+            type="text"
+            value={author}
+            name="author"
+            onChange={({ target }) => setAuthor(target.value)}
+          />
+        </div>
+        <div>
+          url
+          <input
+            type="text"
+            value={url}
+            name="url"
+            onChange={({ target }) => setURL(target.value)}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
       <br></br>
       {usersBlogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
