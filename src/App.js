@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 // Components
 import Blog from './components/Blog'
@@ -61,6 +61,7 @@ const App = () => {
       // Set the token
       blogService.setToken(user.token)
 
+      // Set user to App component state
       setUser(user)
 
       setUsername('')
@@ -106,6 +107,10 @@ const App = () => {
         'success',
         3
       )
+
+      // Hide the new blog form after succesful addition
+      blogFormRef.current.toggleVisibility()
+
     } catch (exception) {
       if (exception.response.status === 400) {
         showNotifMessage(
@@ -124,6 +129,11 @@ const App = () => {
   let usersBlogs = user
     ? blogs.filter(blog => blog.user.username === user.username)
     : blogs
+
+  // Store toggleVisibility function of BlogForm Togglable component
+  // As in, call this function to change the visibility of that BlogForm
+  // component inside the App component
+  const blogFormRef = useRef()
 
   // Render to login form only if user not yet logged in
   if (user === null) {
@@ -153,7 +163,9 @@ const App = () => {
       </div>
       <br></br>
       <h2>create new</h2>
-      <BlogForm createBlog={createNewBlog} />
+      <Togglable buttonLabel="new blog" ref={blogFormRef}>
+        <BlogForm createBlog={createNewBlog} />
+      </Togglable>
       <br></br>
       {usersBlogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
