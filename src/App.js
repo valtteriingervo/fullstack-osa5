@@ -78,7 +78,7 @@ const App = () => {
     }
   }
 
-  // Remove the localstorage item and remove user info from state forching reloading 
+  // Remove the localstorage item and remove user info from state forching reloading
   // of App component
   const handleLogout = () => {
     console.log(`${user.username} time to logout!`)
