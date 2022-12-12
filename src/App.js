@@ -124,6 +124,14 @@ const App = () => {
 
   }
 
+  const compareBlogLikes = (aBlog, bBlog) => {
+    // Some of the likes might be undefined so give them a value of zero in that case
+    const aBlogLikes = aBlog.likes ? aBlog.likes : 0
+    const bBlogLikes = bBlog.likes ? bBlog.likes : 0
+
+    return aBlogLikes - bBlogLikes
+  }
+
   // Filter only the blogs of the logged in user
   // If the user is null just use the list of all the blogs
   let usersBlogs = user
@@ -167,7 +175,7 @@ const App = () => {
         <BlogForm createBlog={createNewBlog} />
       </Togglable>
       <br></br>
-      {usersBlogs.map(blog =>
+      {usersBlogs.sort(compareBlogLikes).reverse().map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
