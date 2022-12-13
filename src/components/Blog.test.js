@@ -13,6 +13,7 @@ titlen renderöinnin testaus riittää.
 
 describe('<Blog />', () => {
   let container
+  const likeBlog = jest.fn()
 
   beforeEach(() => {
     const blog = {
@@ -27,7 +28,7 @@ describe('<Blog />', () => {
 
     // Render the Blog component with the mock blog as props
     // Save the container of the render object
-    container = render(<Blog blog={blog} />).container
+    container = render(<Blog blog={blog} handleBlogLike={likeBlog} />).container
   })
 
   test('5.13: Blog component renders its title and author', () => {
@@ -70,15 +71,6 @@ describe('<Blog />', () => {
   komponentin propsina saamaa tapahtumankäsittelijäfunktiota kutsutaan kaksi kertaa.
   */
 
-  /*
-  NOTE!!!: As the component uses like handler that is not passed as props
-  and rather interacts straight with the blogService I simply check that the
-  likes have increased.
-
-  I assume it is reasonable not to refactor the whole Blog component and App
-  to mark this exercise as done even if it is done a bit differently.
-  */
-
   test('5.15: click handler has been pressed twice with button two like presses', async () => {
     const user = userEvent.setup()
 
@@ -93,8 +85,9 @@ describe('<Blog />', () => {
     await user.click(likeButton)
     await user.click(likeButton)
 
-    // The likes should now have increased by 2 increasing them to 14
-    screen.getByText('likes 14')
+    // The click handler should now have two calls
+    // (It is defined as describe block level variable so we can call it here)
+    expect(likeBlog.mock.calls).toHaveLength(2)
   })
 })
 
