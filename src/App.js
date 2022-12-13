@@ -124,6 +124,14 @@ const App = () => {
 
   }
 
+  const handleBlogLike = async (blogID, blogObject) => {
+    // Create PUT request to update the blog with new likes
+    await blogService.updateBlog(blogID, blogObject)
+    // Fetch the new blogs from DB and change state to reflect the DB info
+    const allBlogsInDB = await blogService.getAll()
+    setBlogs(allBlogsInDB)
+  }
+
   const compareBlogLikes = (aBlog, bBlog) => {
     // Some of the likes might be undefined so give them a value of zero in that case
     const aBlogLikes = aBlog.likes ? aBlog.likes : 0
@@ -176,7 +184,7 @@ const App = () => {
       </Togglable>
       <br></br>
       {usersBlogs.sort(compareBlogLikes).reverse().map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleBlogLike={handleBlogLike} />
       )}
     </div>
   )

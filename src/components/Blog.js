@@ -1,12 +1,10 @@
 import { useState } from 'react'
-
+import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleBlogLike }) => {
   const [viewAll, setViewAll] = useState(false)
-  // Use state in likes to force rerenders when likes change
-  const [blogLikes, setBlogLikes] = useState(blog.likes ? blog.likes : 0)
   const [removed, setRemoved] = useState('')
 
   const blogStyle = {
@@ -18,6 +16,9 @@ const Blog = ({ blog }) => {
     display: removed
   }
 
+  // If blog.likes is undefined set it to zero for the component
+  const blogLikes = blog.likes ? blog.likes : 0
+
   const likeBlog = async () => {
     const blogObject = {
       user: blog.user.id,
@@ -27,9 +28,9 @@ const Blog = ({ blog }) => {
       url: blog.url
     }
 
-    const responseData = await blogService.updateBlog(blog.id, blogObject)
+    // Pass the updated blog to the prop function
+    await handleBlogLike(blog.id, blogObject)
     // Rerender blog component with like change
-    setBlogLikes(responseData.likes)
   }
 
   const deleteBlog = async () => {
@@ -64,6 +65,10 @@ const Blog = ({ blog }) => {
     </div >
   )
 
+}
+
+Blog.propTypes = {
+  handleBlogLike: PropTypes.func.isRequired
 }
 
 export default Blog

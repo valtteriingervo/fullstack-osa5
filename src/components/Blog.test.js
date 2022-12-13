@@ -64,5 +64,37 @@ describe('<Blog />', () => {
     // users name is shown
     screen.getByText('Juuso Mockinen')
   })
+
+  /*
+  Tee testi, joka varmistaa, että jos komponentin like-nappia painetaan kahdesti,
+  komponentin propsina saamaa tapahtumankäsittelijäfunktiota kutsutaan kaksi kertaa.
+  */
+
+  /*
+  NOTE!!!: As the component uses like handler that is not passed as props
+  and rather interacts straight with the blogService I simply check that the
+  likes have increased.
+
+  I assume it is reasonable not to refactor the whole Blog component and App
+  to mark this exercise as done even if it is done a bit differently.
+  */
+
+  test('5.15: click handler has been pressed twice with button two like presses', async () => {
+    const user = userEvent.setup()
+
+    // We must click the viewButton to have the like button be visible
+    const viewButton = screen.getByText('view')
+    await user.click(viewButton)
+
+    // Then we can get the like button
+    const likeButton = screen.getByText('like')
+
+    // Click the like button twice
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    // The likes should now have increased by 2 increasing them to 14
+    screen.getByText('likes 14')
+  })
 })
 
