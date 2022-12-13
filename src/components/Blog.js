@@ -53,7 +53,7 @@ const Blog = ({ blog }) => {
       <div>
         {blog.title} - {blog.author}
         <button onClick={toggleAll}>view</button>
-        <div style={displayToggle}>
+        <div style={displayToggle} className='extraInfo'>
           <p>{blog.url}</p>
           <p>likes {blogLikes}</p>
           <button onClick={likeBlog}>like</button>
