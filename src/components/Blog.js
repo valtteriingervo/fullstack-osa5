@@ -50,8 +50,8 @@ const Blog = ({ blog, handleBlogLike }) => {
   }
 
   return (
-    <div style={blogStyle} >
-      <div>
+    <div style={blogStyle}>
+      <div className='blog'>
         <p id='info-title-author'>{blog.title} - {blog.author}</p>
         <button onClick={toggleAll}>view</button>
         <div style={displayToggle} className='extraInfo'>

@@ -115,5 +115,45 @@ describe('Blog', function () {
         cy.get('@userFullName').should('not.be.visible')
       })
     })
+
+    describe('Multiple blogs have been created with different like amounts', function () {
+      beforeEach(function () {
+        // Create blogs with differing like amounts not in correct like order
+        cy.createBlog({
+          title: 'Five Likes Blog',
+          author: 'Jennifer Caniston',
+          url: 'www.five-likes.com',
+          likes: 5
+        })
+
+        cy.createBlog({
+          title: 'Ten Likes Blog',
+          author: 'Larry Wheeler',
+          url: 'www.ten-likes.com',
+          likes: 10
+        })
+
+        cy.createBlog({
+          title: 'Two Likes Blog',
+          author: 'Chris Cranbery',
+          url: 'www.two-likes.com',
+          likes: 2
+        })
+
+        cy.createBlog({
+          title: 'Twenty Likes Blog',
+          author: 'Julia Lullerby',
+          url: 'www.twenty-likes.com',
+          likes: 20
+        })
+      })
+
+      it('The blogs are in order by likes from most to least', function () {
+        cy.get('.blog').eq(0).should('contain', 'Twenty Likes Blog')
+        cy.get('.blog').eq(1).should('contain', 'Ten Likes Blog')
+        cy.get('.blog').eq(2).should('contain', 'Five Likes Blog')
+        cy.get('.blog').eq(3).should('contain', 'Two Likes Blog')
+      })
+    })
   })
 })
