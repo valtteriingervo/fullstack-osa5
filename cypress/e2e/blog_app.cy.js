@@ -85,13 +85,34 @@ describe('Blog', function () {
         cy.contains('view').click()
 
         //At start likes should be at zero
-        cy.get('#likes').should('contain', 'likes 0')
+        cy.get('#info-likes').should('contain', 'likes 0')
 
         // Click the like button
         cy.get('#like-button').click()
 
         // Likes should be incremented by 1
-        cy.get('#likes').should('contain', 'likes 1')
+        cy.get('#info-likes').should('contain', 'likes 1')
+      })
+
+      it('Blog can be deleted', function () {
+        // Click view to show all info
+        cy.contains('view').click()
+
+        // Before removing should contain all the info
+        cy.get('#info-title-author').as('titleAuthor')
+        cy.get('#info-url').as('URL')
+        cy.get('#info-likes').as('likes')
+        cy.get('#info-user-name').as('userFullName')
+
+        // Click remove to delete the blog
+        cy.get('#remove-button').click()
+        // (Cypress will auto accept our alert)
+
+        // None of the info shown before should be visible
+        cy.get('@titleAuthor').should('not.be.visible')
+        cy.get('@URL').should('not.be.visible')
+        cy.get('@likes').should('not.be.visible')
+        cy.get('@userFullName').should('not.be.visible')
       })
     })
   })

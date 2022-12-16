@@ -52,14 +52,14 @@ const Blog = ({ blog, handleBlogLike }) => {
   return (
     <div style={blogStyle} >
       <div>
-        {blog.title} - {blog.author}
+        <p id='info-title-author'>{blog.title} - {blog.author}</p>
         <button onClick={toggleAll}>view</button>
         <div style={displayToggle} className='extraInfo'>
-          <p>{blog.url}</p>
-          <p id='likes'>likes {blogLikes}</p>
+          <p id='info-url'>{blog.url}</p>
+          <p id='info-likes'>likes {blogLikes}</p>
           <button id='like-button' onClick={likeBlog}>like</button>
-          <p>{blog.user.name}</p>
-          <button onClick={deleteBlog}>remove</button>
+          <p id='info-user-name'>{blog.user.name}</p>
+          <button id='remove-button' onClick={deleteBlog}>remove</button>
         </div>
       </div>
     </div >
