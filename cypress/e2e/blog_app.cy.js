@@ -49,4 +49,27 @@ describe('Blog', function () {
       cy.get('html').should('not.contain', 'valttering logged in')
     })
   })
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      // Log user in
+      cy.login({ username: 'valttering', password: 'salainen' })
+    })
+
+    it('A blog can be created', function () {
+      // Make the blog form visible
+      cy.contains('new blog').click()
+
+      cy.get('#title').type('Test Blog')
+      cy.get('#author').type('John Smith')
+      cy.get('#url').type('www.test-blog.com')
+
+      cy.get('#create-button').click()
+
+      // There should be a notification of succesful blog adding
+      cy.contains('A new blog Test Blog by John Smith added')
+      // And the new blog should now exist
+      cy.contains('Test Blog - John Smith')
+    })
+  })
 })
