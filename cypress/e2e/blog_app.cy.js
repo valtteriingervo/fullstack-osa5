@@ -71,5 +71,28 @@ describe('Blog', function () {
       // And the new blog should now exist
       cy.contains('Test Blog - John Smith')
     })
+
+    describe('And a blog has been created', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Test Blog',
+          author: 'John Smith',
+          url: 'www.test-blog.com'
+        })
+      })
+      it('Blog can be liked', function () {
+        // Click view to show all info
+        cy.contains('view').click()
+
+        //At start likes should be at zero
+        cy.get('#likes').should('contain', 'likes 0')
+
+        // Click the like button
+        cy.get('#like-button').click()
+
+        // Likes should be incremented by 1
+        cy.get('#likes').should('contain', 'likes 1')
+      })
+    })
   })
 })

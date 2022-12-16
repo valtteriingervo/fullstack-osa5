@@ -56,8 +56,8 @@ const Blog = ({ blog, handleBlogLike }) => {
         <button onClick={toggleAll}>view</button>
         <div style={displayToggle} className='extraInfo'>
           <p>{blog.url}</p>
-          <p>likes {blogLikes}</p>
-          <button onClick={likeBlog}>like</button>
+          <p id='likes'>likes {blogLikes}</p>
+          <button id='like-button' onClick={likeBlog}>like</button>
           <p>{blog.user.name}</p>
           <button onClick={deleteBlog}>remove</button>
         </div>
